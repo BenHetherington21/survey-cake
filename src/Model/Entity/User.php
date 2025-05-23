@@ -3,17 +3,18 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
  * User Entity
  *
- * @property int $user_id
- * @property string $user_email
- * @property string $user_password
- * @property string $user_firstname
- * @property string $user_surname
- * @property string $user_type
+ * @property int $id
+ * @property string $email
+ * @property string $password
+ * @property string $firstname
+ * @property string $surname
+ * @property string $type
  */
 class User extends Entity
 {
@@ -27,10 +28,26 @@ class User extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'user_email' => true,
-        'user_password' => true,
-        'user_firstname' => true,
-        'user_surname' => true,
-        'user_type' => true,
+        'email' => true,
+        'password' => true,
+        'firstname' => true,
+        'surname' => true,
+        'type' => true,
     ];
+
+    /**
+     * Fields that are excluded from JSON versions of the entity.
+     *
+     * @var list<string>
+     */
+    protected array $_hidden = [
+        'password',
+    ];
+
+    protected function _setPassword(string $password) : ?string {
+        if(strlen($password) > 0) {
+            return (new DefaultPasswordHasher())->hash($password);
+        }
+        return null;
+    }
 }

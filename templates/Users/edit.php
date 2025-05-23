@@ -10,8 +10,8 @@
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Form->postLink(
                 __('Delete'),
-                ['action' => 'delete', $user->user_id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $user->user_id), 'class' => 'side-nav-item']
+                ['action' => 'delete', $user->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'side-nav-item']
             ) ?>
             <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -22,11 +22,12 @@
             <fieldset>
                 <legend><?= __('Edit User') ?></legend>
                 <?php
-                    echo $this->Form->control('user_email');
-                    echo $this->Form->control('user_password');
-                    echo $this->Form->control('user_firstname');
-                    echo $this->Form->control('user_surname');
-                    echo $this->Form->control('user_type');
+                    echo $this->Form->control('id');
+                    echo $this->Form->control('email');
+                    echo $this->Form->control('password');
+                    echo $this->Form->control('firstname');
+                    echo $this->Form->control('surname');
+                    echo $this->Form->control('type');
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>

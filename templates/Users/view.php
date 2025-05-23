@@ -8,39 +8,35 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->user_id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->user_id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->user_id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-80">
         <div class="users view content">
-            <h3><?= h($user->user_email) ?></h3>
+            <h3><?= h($user->email) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('User Email') ?></th>
-                    <td><?= h($user->user_email) ?></td>
+                    <th><?= __('Email') ?></th>
+                    <td><?= h($user->email) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('User Password') ?></th>
-                    <td><?= h($user->user_password) ?></td>
+                    <th><?= __('Firstname') ?></th>
+                    <td><?= h($user->firstname) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('User Firstname') ?></th>
-                    <td><?= h($user->user_firstname) ?></td>
+                    <th><?= __('Surname') ?></th>
+                    <td><?= h($user->surname) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('User Surname') ?></th>
-                    <td><?= h($user->user_surname) ?></td>
+                    <th><?= __('Type') ?></th>
+                    <td><?= h($user->type) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('User Type') ?></th>
-                    <td><?= h($user->user_type) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('User Id') ?></th>
-                    <td><?= $this->Number->format($user->user_id) ?></td>
+                    <th><?= __('Id') ?></th>
+                    <td><?= $this->Number->format($user->id) ?></td>
                 </tr>
             </table>
         </div>
