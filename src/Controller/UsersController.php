@@ -10,6 +10,11 @@ namespace App\Controller;
  */
 class UsersController extends AppController
 {
+    public function beforeFilter(\Cake\Event\EventInterface $event) {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['login', 'add']);
+    }
+
     /**
      * Index method
      *
@@ -97,5 +102,32 @@ class UsersController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function login() {
+        $this->request->allowMethod(['get', 'post']);
+        $result = $this->Authentication->getResult();
+
+        if($result && $result->isValid()) {
+            $redirect = $this->request->getQuery('redirect', [
+                'controller' => 'Articles',
+                'action' => 'index'
+            ]);
+
+            return $this->redirect($redirect);
+        }
+
+        if($this->request->is('post') && !$result->isValid()) {
+            $this->Flash->error(__('Invalid email or password'));
+        }
+    }
+
+    public function logout() {
+        $result = $this->Authentication->getResult();
+        if($result && $result->isValid()) {
+            $this->Authentication->logout();
+
+            return $this->redirect('/');
+        }
     }
 }
