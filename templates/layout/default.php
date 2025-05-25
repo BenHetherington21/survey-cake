@@ -56,10 +56,10 @@
                 </div>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a href="" class="nav-link"><i class="bi bi-person-circle"></i></a>
+                        <a href="/users/index" class="nav-link"><i class="bi bi-person-circle"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">Logout</a>
+                        <a class="nav-link" aria-current="page" href="/users/logout">Logout</a>
                     </li>
                 </ul>
             </div>

@@ -4,29 +4,19 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="users form content">
-            <?= $this->Form->create($user) ?>
-            <fieldset>
-                <legend><?= __('Add User') ?></legend>
-                <?php
-                    echo $this->Form->control('id');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('password');
-                    echo $this->Form->control('firstname');
-                    echo $this->Form->control('surname');
-                    echo $this->Form->control('type');
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
-    </div>
+<div class="users form border p-5 mt-5 rounded-4 container-sm">
+    <h3>Register</h3>
+    <?= $this->Form->create() ?>
+    <fieldset>
+        <?= $this->Flash->render() ?>
+        <?= $this->Form->control('firstname', ['required' => true, 'class' => 'form-control']) ?>
+        <?= $this->Form->control('surname', ['required' => true, 'class' => 'form-control']) ?>
+        <?= $this->Form->control('email', ['required' => true, 'class' => 'form-control']) ?>
+        <?= $this->Form->control('password', ['required' => true, 'class' => 'form-control', 'value' => '']) ?>
+        <?= $this->Form->control('confirm-password', ['required' => true, 'class' => 'form-control', 'value' => '', 'type' => 'password']) ?>
+    </fieldset>
+    <?= $this->Form->submit(__('Register'), ['class' => 'btn btn-primary mt-2']); ?>
+    <?= $this->Form->end() ?>
+
+    <span>Already have an account? </span><?= $this->Html->link("Login", ['action' => 'login']) ?>
 </div>
