@@ -25,7 +25,32 @@ class UsersController extends AppController
         $query = $this->Users->find();
         $users = $this->paginate($query);
 
+        $userID = $this->request->getAttribute('identity')->getIdentifier();
+
         $this->set(compact('users'));
+    }
+
+    public function profile() {
+        $userID = $this->request->getAttribute('identity')->getIdentifier();
+
+        if($this->request->is('post')) {
+            dd($this->request);
+        }
+
+        $user = $this->Users->get($userID, contain: []);
+        $this->set(compact('user'));
+    }
+
+    public function update() {
+        $userID = $this->request->getAttribute('identity')->getIdentifier();
+
+        $user = $this->Users->get($userID);
+
+        $this->Users->patchEntity( $user, $this->request->getData());
+
+        $this->Users->save($user);
+
+        return $this->redirect(['action'=> 'profile']);
     }
 
     /**
@@ -37,6 +62,13 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+        $userID = $this->request->getAttribute('identity')->getIdentifier();
+
+        // Prevent user from accessing profile that isn't there's
+        if($userID != $id) {
+            return $this->redirect('/');
+        }
+
         $user = $this->Users->get($id, contain: []);
         $this->set(compact('user'));
     }
