@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Authentication\PasswordHasher\DefaultPasswordHasher;
+
 /**
  * Users Controller
  *
@@ -13,7 +15,7 @@ class UsersController extends AppController
     public function beforeFilter(\Cake\Event\EventInterface $event) {
         parent::beforeFilter($event);
         $this->Authentication->addUnauthenticatedActions(['login', 'add']);
-        
+
         if($this->request->getAttribute('identity') != null) {
             $this->set('login', 'Logout');
         } else {
@@ -120,6 +122,32 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
+    }
+
+    public function changePassword($id = null) {
+        $user = $this->Users->get($id, contain: []);
+        if($this->request->is(['post'])) {
+            $data = $this->request->getData();
+
+            if($data['newpassword'] != $data['confirm-newpassword']) {
+                return $this->Flash->error(__('Passwords did not match'));
+            }
+
+            $hasher = new DefaultPasswordHasher();
+
+            if(!$hasher->check($data['oldpassword'], $user->password)) {
+                return $this->Flash->error(__('Old password is incorrect'));
+            }
+
+            $user->password = $data['newpassword'];
+
+            if($this->Users->save($user)) {
+                $this->Flash->success(__('Your password has been changed successfully'));
+                return $this->redirect(['action'=> 'profile']);
+            }
+
+            return $this->Flash->error(__('There was an error changing your password.'));
+        }
     }
 
     /**

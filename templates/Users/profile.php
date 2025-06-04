@@ -1,4 +1,4 @@
-<span?php
+<?php
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
@@ -6,6 +6,7 @@
 ?>
 <div class="container bg-light mt-3 p-5 rounded-4">
     <h3>Profile</h3>
+    <?= $this->Flash->render() ?>
     <?= $this->Form->create(null, ['url' => ['controller' => 'Users', 'action' => 'update'], 'type' => 'post']) ?>
     <div class="input-group mb-3">
         <span class="input-group-text col-1">First name</span>
@@ -30,8 +31,8 @@
         <button type="submit" id="emailSave" class="btn btn-success col-1" style="display: none">Save</button>
     </div>
     <?= $this->Form->end() ?>
-    <button class="btn btn-primary">Change password</button>
-    <button class="btn btn-danger">Delete account</button>
+    <?= $this->Html->link('Change password', ['action' => 'changePassword'], ['class' => 'btn btn-primary']) ?>
+    <?= $this->Html->link('Delete account', ['action' => 'delete'], ['class' => 'btn btn-danger']) ?>
 </div>
 
 <script>
