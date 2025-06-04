@@ -59,7 +59,7 @@
                         <a href="/users/profile" class="nav-link"><i class="bi bi-person-circle"></i></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/users/logout">Logout</a>
+                        <a class="nav-link" aria-current="page" href="/users/logout"><?= $login ?></a>
                     </li>
                 </ul>
             </div>
