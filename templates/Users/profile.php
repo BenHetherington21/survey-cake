@@ -32,7 +32,7 @@
     </div>
     <?= $this->Form->end() ?>
     <?= $this->Html->link('Change password', ['action' => 'changePassword'], ['class' => 'btn btn-primary']) ?>
-    <?= $this->Html->link('Delete account', ['action' => 'delete'], ['class' => 'btn btn-danger']) ?>
+    <?= $this->Form->postLink('Delete account', ['action' => 'delete', $user->id], ['class' => 'btn btn-danger', 'confirm' => 'Are you sure you want to delete your account']) ?>
 </div>
 
 <script>

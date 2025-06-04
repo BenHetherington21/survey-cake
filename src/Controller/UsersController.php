@@ -95,7 +95,7 @@ class UsersController extends AppController
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Registered successfully. Please login using your username and password'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'profile']);
             }
             $this->Flash->error(__('There was a problem registering your account. Please, try again.'));
         }
@@ -167,7 +167,7 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'logout']);
     }
 
     public function login() {
