@@ -17,7 +17,7 @@
             <input type="text" name="title" class="form-control">
         </div>
         <label>Description</label>
-        <textarea name="title" class="form-control mb-3"></textarea>
+        <textarea name="description" class="form-control mb-3"></textarea>
         <div class="d-flex justify-content-around mb-3">
             <div class="input-group me-3">
                 <span class="input-group-text">Status</span>
@@ -42,6 +42,8 @@
             </div>
         </div>
     </fieldset>
+    <?= $this->Form->submit('Save', ['class' => 'btn btn-primary']) ?>
+    <?= $this->Form->end(); ?>
 </div>
 
 <script>

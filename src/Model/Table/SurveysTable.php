@@ -95,19 +95,15 @@ class SurveysTable extends Table
 
         $validator
             ->dateTime('creation_date')
-            ->requirePresence('creation_date', 'create')
             ->notEmptyDateTime('creation_date');
 
         $validator
             ->dateTime('completion_date')
-            ->requirePresence('completion_date', 'create')
             ->notEmptyDateTime('completion_date');
 
         $validator
             ->scalar('code')
             ->maxLength('code', 8)
-            ->requirePresence('code', 'create')
-            ->notEmptyString('code')
             ->add('code', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
