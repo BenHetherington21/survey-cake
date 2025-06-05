@@ -15,12 +15,6 @@ class UsersController extends AppController
     public function beforeFilter(\Cake\Event\EventInterface $event) {
         parent::beforeFilter($event);
         $this->Authentication->addUnauthenticatedActions(['login', 'add']);
-
-        if($this->request->getAttribute('identity') != null) {
-            $this->set('login', 'Logout');
-        } else {
-            $this->set('login', 'Login');
-        }
     }
 
     /**

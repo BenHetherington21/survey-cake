@@ -44,6 +44,8 @@ class SurveysController extends AppController
      */
     public function add()
     {
+        $userID = $this->request->getAttribute('identity')->getIdentifier();
+
         $survey = $this->Surveys->newEmptyEntity();
         if ($this->request->is('post')) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
@@ -55,7 +57,7 @@ class SurveysController extends AppController
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
         $users = $this->Surveys->Users->find('list', limit: 200)->all();
-        $this->set(compact('survey', 'users'));
+        $this->set(compact('survey', 'users', 'userID'));
     }
 
     /**

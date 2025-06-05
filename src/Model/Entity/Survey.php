@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property string $title
  * @property string $description
  * @property string $status
- * @property int $visibility
+ * @property string $visibility
  * @property \Cake\I18n\DateTime $creation_date
  * @property \Cake\I18n\DateTime $completion_date
  * @property string $code

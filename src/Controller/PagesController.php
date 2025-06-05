@@ -74,11 +74,5 @@ class PagesController extends AppController
     public function beforeFilter(\Cake\Event\EventInterface $event) {
         parent::beforeFilter($event);
         $this->Authentication->addUnauthenticatedActions(['display']);
-
-        if($this->request->getAttribute('identity') != null) {
-            $this->set('login', 'Logout');
-        } else {
-            $this->set('login', 'Login');
-        }
     }
 }

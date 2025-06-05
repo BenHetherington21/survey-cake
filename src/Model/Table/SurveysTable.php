@@ -88,7 +88,8 @@ class SurveysTable extends Table
             ->notEmptyString('status');
 
         $validator
-            ->integer('visibility')
+            ->scalar('visibility')
+            ->maxLength('visibility', 20)
             ->requirePresence('visibility', 'create')
             ->notEmptyString('visibility');
 

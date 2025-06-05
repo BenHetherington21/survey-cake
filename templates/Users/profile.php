@@ -35,6 +35,17 @@
     <?= $this->Form->postLink('Delete account', ['action' => 'delete', $user->id], ['class' => 'btn btn-danger', 'confirm' => 'Are you sure you want to delete your account']) ?>
 </div>
 
+<div class="container bg-light mt-3 p-5 rounded-4">
+    <div class="d-flex justify-content-between">
+        <h3>My surveys</h3>
+        <?= $this->Html->link('New survey', ['controller' => 'Surveys', 'action' => 'add'], ['class' => 'btn btn-primary']) ?>
+    </div>
+</div>
+
+<div class="container bg-light mt-3 p-5 rounded-4">
+    <h3>My responses</h3>
+</div>
+
 <script>
 const firstname = document.getElementById('firstname');
 const firstnameEdit = document.getElementById('firstnameEdit');
