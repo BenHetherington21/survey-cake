@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
+ * @var \Cake\ORM\ResultSet<\App\Model\Entity\Survey> $surveys
  */
 ?>
 <div class="container bg-light mt-3 p-5 rounded-4">
@@ -38,7 +39,25 @@
 <div class="container bg-light mt-3 p-5 rounded-4">
     <div class="d-flex justify-content-between">
         <h3>My surveys</h3>
-        <?= $this->Html->link('New survey', ['controller' => 'Surveys', 'action' => 'add'], ['class' => 'btn btn-primary']) ?>
+        <?= $this->Html->link('New survey', ['controller' => 'Surveys', 'action' => 'add'], ['class' => 'btn btn-primary mb-3']) ?>
+    </div>
+    <div>
+        <?php foreach($surveys as $survey): ?>
+            <div class="card">
+                <h5 class="card-header"><?= $this->Html->link($survey->title, ['controller' => 'Surveys', 'action' => 'view', $survey->id]) ?></h5>
+                <div class="card-body">
+                    <p class="card-text"><?= $survey->description ?></p>
+                </div>
+                <div class="card-footer">
+                    <div class="position-relative text-center">
+                        <span class="position-absolute start-0">Created: <?= $survey->creation_date ?></span>
+                        <span class="">Status: <?= ($survey->status == 'Open' ? 'Open' : 'Closed at ' . $survey->completion_date) ?></span>
+                        <span class="position-absolute end-0">Visibility: <?= $survey->visibility ?></span>
+                    </div>
+                    
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>
 

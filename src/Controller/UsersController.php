@@ -4,17 +4,26 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
+ * @property \App\Model\Table\SurveysTable $Surveys
  */
 class UsersController extends AppController
 {
+    private \Cake\ORM\Table $Surveys;
+
     public function beforeFilter(\Cake\Event\EventInterface $event) {
         parent::beforeFilter($event);
         $this->Authentication->addUnauthenticatedActions(['login', 'add']);
+    }
+
+    public function initialize(): void {
+        parent::initialize();
+        $this->Surveys = TableRegistry::getTableLocator()->get('Surveys');
     }
 
     /**
@@ -35,12 +44,14 @@ class UsersController extends AppController
     public function profile() {
         $userID = $this->request->getAttribute('identity')->getIdentifier();
 
+        $surveys = $this->Surveys->find()->where(['user_id IS' => $userID])->all();
+
         if($this->request->is('post')) {
             dd($this->request);
         }
 
         $user = $this->Users->get($userID, contain: []);
-        $this->set(compact('user'));
+        $this->set(compact('user', 'surveys'));
     }
 
     public function update() {
