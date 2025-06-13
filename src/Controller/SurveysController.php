@@ -37,6 +37,20 @@ class SurveysController extends AppController
         $this->set(compact('survey'));
     }
 
+    public function generateCode() {
+        if($this->request->is('post')) {
+            $id = $this->request->getData('id');
+            $code = substr(base_convert((string) mt_rand(), 10, 36), 0, 8);
+
+            $survey = $this->Surveys->get($id);
+            $survey->code = $code;
+
+            if($this->Surveys->save($survey)) {
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
+            }
+        }
+    }
+
     /**
      * Add method
      *

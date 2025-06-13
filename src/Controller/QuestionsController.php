@@ -46,7 +46,12 @@ class QuestionsController extends AppController
     {
         $question = $this->Questions->newEmptyEntity();
         if ($this->request->is('post')) {
-            $question = $this->Questions->patchEntity($question, $this->request->getData());
+            $questionData = $this->request->getData();
+            if($questionData['options'] === '') {
+                $questionData['options'] = null;
+            }
+
+            $question = $this->Questions->patchEntity($question, $questionData);
             if ($this->Questions->save($question)) {
                 $this->Flash->success(__('The question has been saved.'));
 
