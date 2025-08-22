@@ -3,13 +3,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+
 /**
  * Questions Controller
  *
  * @property \App\Model\Table\QuestionsTable $Questions
+ * @property \App\Model\Table\SurveysTable $Surveys
  */
 class QuestionsController extends AppController
 {
+    public function initialize(): void {
+        parent::initialize();
+        $this->Surveys = TableRegistry::getTableLocator()->get('Surveys');
+    }
+
     /**
      * Index method
      *
@@ -42,16 +50,40 @@ class QuestionsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($surveyID)
     {
         $question = $this->Questions->newEmptyEntity();
+
+        $totalQuestions = count($this->Questions->find()->where(['survey_id' => $surveyID])->all());
+
         if ($this->request->is('post')) {
             $questionData = $this->request->getData();
-            if($questionData['options'] === '') {
+
+            if($questionData['required'] == 'on') {
+                $questionData['required'] = 1;
+            } else {
+                $questionData['required'] = 0;
+            }
+
+            if($questionData['type'] == 'Multiple Choice' || $questionData['type'] == 'Multiple Selection') {
+                $questionData['options'] = [];
+                for ($i=1; $i <= $questionData['totalOptions']; $i++) {
+                    if($questionData['option-' . $i]) {
+                        array_push($questionData['options'], $questionData['option-' . $i]);
+                    } else {
+                        break;
+                    }
+                }
+                $questionData['options'] = json_encode($questionData['options']);
+            } else if($questionData['type'] == 'Number Scale') {
+                $questionData['options'] = [intval($questionData['min']), intval($questionData['max'])];
+                $questionData['options'] = json_encode($questionData['options']);
+            } else {
                 $questionData['options'] = null;
             }
 
             $question = $this->Questions->patchEntity($question, $questionData);
+
             if ($this->Questions->save($question)) {
                 $this->Flash->success(__('The question has been saved.'));
 
@@ -60,7 +92,7 @@ class QuestionsController extends AppController
             $this->Flash->error(__('The question could not be saved. Please, try again.'));
         }
         $surveys = $this->Questions->Surveys->find('list', limit: 200)->all();
-        $this->set(compact('question', 'surveys'));
+        $this->set(compact('question', 'surveys', 'surveyID', 'totalQuestions'));
     }
 
     /**

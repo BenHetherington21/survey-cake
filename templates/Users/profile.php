@@ -43,8 +43,8 @@
     </div>
     <div>
         <?php foreach($surveys as $survey): ?>
-            <div class="card">
-                <h5 class="card-header"><?= $this->Html->link($survey->title, ['controller' => 'Surveys', 'action' => 'view', $survey->id]) ?></h5>
+            <div class="card mb-3">
+                <h5 class="card-header"><?= $this->Html->link($survey->title, ['controller' => 'Surveys', 'action' => 'manage', $survey->id]) ?></h5>
                 <div class="card-body">
                     <p class="card-text"><?= $survey->description ?></p>
                 </div>

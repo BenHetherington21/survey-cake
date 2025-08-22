@@ -31,7 +31,7 @@ class SurveysController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function manage($id = null)
     {
         $survey = $this->Surveys->get($id, contain: ['Users', 'Questions', 'Responses']);
         $this->set(compact('survey'));
@@ -64,9 +64,7 @@ class SurveysController extends AppController
         if ($this->request->is('post')) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('The survey has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'manage', $survey->id]);
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }

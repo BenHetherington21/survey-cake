@@ -43,7 +43,7 @@
                                 <li><?= $option ?></li>
                             <?php endforeach; ?>
                         </ul>
-                    <?php elseif($question->type == 'Number scale'): ?>
+                    <?php elseif($question->type == 'Number Scale'): ?>
                         <input type="range" class="card-text form-range" disabled min="<?= json_decode($question->options)[0] ?>" max="<?= json_decode($question->options)[1] ?>">
                         <div class="d-flex justify-content-around">
                             <?php for($i = json_decode($question->options)[0]; $i <= json_decode($question->options)[1]; $i++): ?>
