@@ -6,7 +6,7 @@
 ?>
 <div class="container bg-light mt-3 p-5 rounded-4">
     <div class="card mb-3">
-        <h5 class="card-header"><?= $this->Html->link($survey->title, ['controller' => 'Surveys', 'action' => 'view', $survey->id]) ?></h5>
+        <h5 class="card-header"><?= $this->Html->link($survey->title, ['controller' => 'Surveys', 'action' => 'manage', $survey->id]) ?></h5>
         <div class="card-body">
             <p class="card-text"><?= $survey->description ?></p>
         </div>
@@ -18,7 +18,7 @@
             </div>  
         </div>
         <div class="card-footer">
-            <span><?= ($survey->code ? 'Unqiue Code: ' . $survey->code : $this->Form->postLink('Generate code', ['controller' => 'Surveys' ,'action' => 'generate-code'], ['class' => 'btn btn-primary', 'data' => ['id' => $survey->id]])) ?></span>
+            <span><?= ($survey->code ? 'Unqiue Code: ' . $this->Html->link($survey->code, ['controller' => 'Surveys', 'action' => 'share', $survey->code]) : $this->Form->postLink('Generate code', ['controller' => 'Surveys' ,'action' => 'generate-code'], ['class' => 'btn btn-primary', 'data' => ['id' => $survey->id]])) ?></span>
         </div>
     </div>
     <div class="d-flex justify-content-between">

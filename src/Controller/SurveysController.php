@@ -37,6 +37,21 @@ class SurveysController extends AppController
         $this->set(compact('survey'));
     }
 
+    public function share($code) {
+        $survey = $this->Surveys->find()->where(['code IS' => $code])->first();
+
+        if($survey != null) {
+            return $this->redirect(['action' => 'survey', $survey->id]);
+        }
+        
+        return $this->redirect(['action' => 'index']);
+    }
+
+    public function survey($id) {
+        $survey = $this->Surveys->get($id, contain: ['Users', 'Questions', 'Responses']);
+        $this->set(compact('survey'));
+    }
+
     public function generateCode() {
         if($this->request->is('post')) {
             $id = $this->request->getData('id');
@@ -46,7 +61,7 @@ class SurveysController extends AppController
             $survey->code = $code;
 
             if($this->Surveys->save($survey)) {
-                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'manage', $id]);
             }
         }
     }
