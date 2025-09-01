@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\I18n\FrozenTime;
+
 /**
  * Responses Controller
  *
@@ -57,6 +59,29 @@ class ResponsesController extends AppController
         $users = $this->Responses->Users->find('list', limit: 200)->all();
         $surveys = $this->Responses->Surveys->find('list', limit: 200)->all();
         $this->set(compact('response', 'users', 'surveys'));
+    }
+
+    public function save($surveyID) {
+        $userID = $this->request->getAttribute('identity')->getIdentifier();
+
+        $response = $this->Responses->newEmptyEntity();
+        if($this->request->is('post')) {
+            $responseData = [
+                'user_id' => $userID,
+                'survey_id' => $surveyID,
+                'type' => 'public',
+                'data' => json_encode($this->request->getData()),
+                'time' => FrozenTime::now()
+            ];
+            $response = $this->Responses->patchEntity($response, $responseData);
+            if ($this->Responses->save($response)) {
+                $this->Flash->success(__('The response has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The response could not be saved. Please, try again.'));
+            dd($response);
+        }
     }
 
     /**

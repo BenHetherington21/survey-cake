@@ -25,6 +25,10 @@
         <h3>Questions</h3>
     </div>
     <div>
+        <?= $this->Form->create(null, [
+            'url' => ['controller' => 'Responses', 'action' => 'save', $survey->id],
+            'type' => 'post'
+        ]) ?>
         <?php foreach ($survey->questions as $question) : ?>
             <div class="card mb-3">
                 <h5 class="card-header"><?= $question->position . '. ' . $question->title ?></h5>
@@ -33,19 +37,19 @@
                     <?php if($question->type == 'Multiple Choice'): ?>
                         <?php foreach(json_decode($question->options) as $i=>$option) : ?>
                             <div class="form-check">
-                                <input type="radio" class="form-check-input" name="radio-<?=$question->position?>" id="radio-<?=$question->position?>-<?=$i+1?>">
+                                <input type="radio" class="form-check-input" name="answers[<?=$question->position?>]" id="radio-<?=$question->position?>-<?=$i+1?>" value="<?= $option ?>">
                                 <label for="radio-<?=$question->position?>-<?=$i+1?>" class="form-check-label"><?= $option ?></label>
                             </div>
                         <?php endforeach; ?>
                     <?php elseif($question->type == 'Multiple Selection'): ?>
                         <?php foreach(json_decode($question->options) as $i=>$option) : ?>
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="check-<?=$question->position?>" id="check-<?=$question->position?>-<?=$i+1?>">
+                                <input type="checkbox" class="form-check-input" name="answers[<?=$question->position?>][]" id="check-<?=$question->position?>-<?=$i+1?>" value="<?= $option ?>">
                                 <label for="check-<?=$question->position?>-<?=$i+1?>" class="form-check-label"><?= $option ?></label>
                             </div>
                         <?php endforeach; ?>
                     <?php elseif($question->type == 'Number Scale'): ?>
-                        <input type="range" class="card-text form-range" min="<?= json_decode($question->options)[0] ?>" max="<?= json_decode($question->options)[1] ?>">
+                        <input name="answers[<?= $question->position ?>]" type="range" class="card-text form-range" value="" min="<?= json_decode($question->options)[0] ?>" max="<?= json_decode($question->options)[1] ?>">
                         <div class="d-flex justify-content-around">
                             <?php for($i = json_decode($question->options)[0]; $i <= json_decode($question->options)[1]; $i++): ?>
                                 <span><?= $i ?></span>
@@ -57,17 +61,17 @@
                 <div class="card-body">
                     <?php if($question->type == 'True/False'): ?>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="radio-<?=$question->position?>" id="radio-<?=$question->position?>-1">
+                            <input type="radio" class="form-check-input" name="answers[<?= $question->position ?>]" id="radio-<?=$question->position?>-1" value="true">
                             <label for="radio-<?=$question->position?>-1" class="form-check-label">True</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="radio-<?=$question->position?>" id="radio-<?=$question->position?>-2">
+                            <input type="radio" class="form-check-input" name="answers[<?= $question->position ?>]" id="radio-<?=$question->position?>-2" value="false">
                             <label for="radio-<?=$question->position?>-2" class="form-check-label">False</label>
                         </div>
                     <?php elseif($question->type == 'Short Text'): ?>
-                        <input type="text" class="form-control" name="<?=$question->position?>" placeholder="Enter text here...">
+                        <input type="text" class="form-control" name="answers[<?=$question->position?>]" placeholder="Enter text here...">
                     <?php elseif($question->type == 'Long Text'): ?>
-                        <textarea name="<?=$question->position?>" class="form-control"></textarea>
+                        <textarea name="answers[<?=$question->position?>]" class="form-control"></textarea>
                     <?php endif; ?>
                 </div>
                 <?php endif; ?>
@@ -80,4 +84,6 @@
             </div>
         <?php endforeach ?>
     </div>
+    <?= $this->Form->submit('Submit', ['class' => 'btn btn-lg btn-success']) ?>
+    <?= $this->Form->end() ?>
 </div>

@@ -50,6 +50,10 @@ class SurveysController extends AppController
     public function survey($id) {
         $survey = $this->Surveys->get($id, contain: ['Users', 'Questions', 'Responses']);
         $this->set(compact('survey'));
+
+        if($this->request->is('post')) {
+            dd($this->request->getData());
+        }
     }
 
     public function generateCode() {
