@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Survey $survey
+ * @var ArrayObject $questions
  */
 ?>
 <div class="container bg-light mt-3 p-5 rounded-4">
@@ -24,7 +25,7 @@
     <div class="d-flex justify-content-between">
         <h3>Questions</h3>
         <div>
-            <?= $this->Html->link('Show responses', ['action' => 'responses', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
+            <?= $this->Html->link('Hide responses', ['action' => 'manage', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
             <?= $this->Html->link('Add question', ['controller' => 'Questions', 'action' => 'add', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
         </div>
     </div>
@@ -32,30 +33,46 @@
         <?php foreach ($survey->questions as $question) : ?>
             <div class="card mb-3">
                 <h5 class="card-header"><?= $question->position . '. ' . $question->title ?></h5>
-                <?php if($question->options): ?>
+                <?php //if($question->options): ?>
                 <div class="card-body">
                     <?php if($question->type == 'Multiple Choice'): ?>
                         <ol class="card-text">
+                            <?php $counts = array_count_values($questions[$question->position]); ?>
                             <?php foreach(json_decode($question->options) as $option) : ?>
-                                <li><?= $option ?></li>
+                                <li><?= $option ?> - <?= $counts[$option] ?? '0' ?></li>
                             <?php endforeach; ?>
                         </ol>
                     <?php elseif($question->type == 'Multiple Selection'): ?>
                         <ul class="card-text">
+                            <?php $counts = array_count_values($questions[$question->position]); ?>
                             <?php foreach(json_decode($question->options) as $option) : ?>
-                                <li><?= $option ?></li>
+                                <li><?= $option ?> - <?= $counts[$option] ?? '0' ?></li>
                             <?php endforeach; ?>
                         </ul>
                     <?php elseif($question->type == 'Number Scale'): ?>
+                        <?php $counts = array_count_values($questions[$question->position]); ?>
                         <input type="range" class="card-text form-range" disabled min="<?= json_decode($question->options)[0] ?>" max="<?= json_decode($question->options)[1] ?>">
                         <div class="d-flex justify-content-around">
                             <?php for($i = json_decode($question->options)[0]; $i <= json_decode($question->options)[1]; $i++): ?>
-                                <span><?= $i ?></span>
+                                <span><?= $i ?> - <?= $counts[$i] ?? '0'?></span>
                             <?php endfor; ?>
                         </div>
+                    <?php elseif($question->type == 'True/False'): ?>
+                        <ul class="card-text">
+                            <?php $counts = array_count_values($questions[$question->position]); ?>
+                            <?php foreach($counts as $option => $count) : ?>
+                                <li><?= ucfirst($option) ?> - <?= $count ?? '0' ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <ul class="card-text">
+                            <?php foreach($questions[$question->position] as $response): ?>
+                                <li><?= $response ?></li>
+                            <?php endforeach; ?>
+                        </ul>
                     <?php endif; ?>
                 </div>
-                <?php endif; ?>
+                <?php //endif; ?>
                 <div class="card-footer">
                     <div class="d-flex justify-content-between">
                         <span>Question Type: <?= $question->type ?></span>

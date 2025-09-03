@@ -37,6 +37,34 @@ class SurveysController extends AppController
         $this->set(compact('survey'));
     }
 
+    public function responses($id) {
+        $survey = $this->Surveys->get($id, contain: ['Users', 'Questions', 'Responses']);
+
+        $questions = [];
+
+        foreach($survey->questions as $question) {
+            $questions[$question->position] = [];
+        }
+
+        foreach($survey->responses as $response) {
+            $answers = json_decode($response->data, true)['answers'];
+
+            foreach($answers as $position =>  $answer) {
+                if(is_array($answer)) {
+                    foreach($answer as $a) {
+                        $questions[$position][] = $a;
+                    }
+                } else {
+                    $questions[$position][] = $answer;
+                }
+            }
+        }
+
+        // dd($questions);
+
+        $this->set(compact('survey', 'questions'));
+    }
+
     public function share($code) {
         $survey = $this->Surveys->find()->where(['code IS' => $code])->first();
 
