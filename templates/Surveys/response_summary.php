@@ -25,7 +25,8 @@
     <div class="d-flex justify-content-between">
         <h3>Questions</h3>
         <div>
-            <?= $this->Html->link('Hide responses', ['action' => 'manage', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
+            <?= $this->Html->link('View all responses', ['controller' => 'Responses', 'action' => 'list', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
+            <?= $this->Html->link('Hide response summary', ['action' => 'manage', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
             <?= $this->Html->link('Add question', ['controller' => 'Questions', 'action' => 'add', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
         </div>
     </div>
@@ -39,14 +40,14 @@
                         <ol class="card-text">
                             <?php $counts = array_count_values($questions[$question->position]); ?>
                             <?php foreach(json_decode($question->options) as $option) : ?>
-                                <li><?= $option ?> - <?= $counts[$option] ?? '0' ?></li>
+                                <li><?= $option ?> - <?= ($counts[$option] ?? '0') . ' ' . ($counts[$option] ?? 0 == 1 ? 'response' : 'responses')?></li>
                             <?php endforeach; ?>
                         </ol>
                     <?php elseif($question->type == 'Multiple Selection'): ?>
                         <ul class="card-text">
                             <?php $counts = array_count_values($questions[$question->position]); ?>
                             <?php foreach(json_decode($question->options) as $option) : ?>
-                                <li><?= $option ?> - <?= $counts[$option] ?? '0' ?></li>
+                                <li><?= $option ?> - <?= ($counts[$option] ?? '0') . ' ' . ($counts[$option] ?? 0 == 1 ? 'response' : 'responses')?></li>
                             <?php endforeach; ?>
                         </ul>
                     <?php elseif($question->type == 'Number Scale'): ?>
@@ -54,14 +55,14 @@
                         <input type="range" class="card-text form-range" disabled min="<?= json_decode($question->options)[0] ?>" max="<?= json_decode($question->options)[1] ?>">
                         <div class="d-flex justify-content-around">
                             <?php for($i = json_decode($question->options)[0]; $i <= json_decode($question->options)[1]; $i++): ?>
-                                <span><?= $i ?> - <?= $counts[$i] ?? '0'?></span>
+                                <span><?= $i ?> - <?= ($counts[$i] ?? '0') . ' ' . ($counts[$i] ?? 0 == 1 ? 'response' : 'responses') ?></span>
                             <?php endfor; ?>
                         </div>
                     <?php elseif($question->type == 'True/False'): ?>
                         <ul class="card-text">
                             <?php $counts = array_count_values($questions[$question->position]); ?>
                             <?php foreach($counts as $option => $count) : ?>
-                                <li><?= ucfirst($option) ?> - <?= $count ?? '0' ?></li>
+                                <li><?= ucfirst($option) ?> - <?= ($count ?? '0') . ' ' . ($count == 1 ? 'response' : 'responses') ?></li>
                             <?php endforeach; ?>
                         </ul>
                     <?php else: ?>

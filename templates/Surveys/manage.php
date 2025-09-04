@@ -24,7 +24,8 @@
     <div class="d-flex justify-content-between">
         <h3>Questions</h3>
         <div>
-            <?= $this->Html->link('Show responses', ['action' => 'responses', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
+            <?= $this->Html->link('View all responses', ['controller' => 'Responses', 'action' => 'list', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
+            <?= $this->Html->link('Show response summary', ['action' => 'response-summary', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
             <?= $this->Html->link('Add question', ['controller' => 'Questions', 'action' => 'add', $survey->id], ['class' => 'btn btn-primary mb-3']) ?>
         </div>
     </div>

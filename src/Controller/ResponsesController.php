@@ -4,14 +4,21 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\I18n\FrozenTime;
+use Cake\ORM\TableRegistry;
 
 /**
  * Responses Controller
  *
  * @property \App\Model\Table\ResponsesTable $Responses
+ * @property \App\Model\Table\QuestionsTable $Questions
  */
 class ResponsesController extends AppController
 {
+    public function initialize(): void {
+        parent::initialize();
+        $this->Questions = TableRegistry::getTableLocator()->get('Questions');
+    }
+
     /**
      * Index method
      *
@@ -37,6 +44,20 @@ class ResponsesController extends AppController
     {
         $response = $this->Responses->get($id, contain: ['Users', 'Surveys']);
         $this->set(compact('response'));
+    }
+
+    public function list($surveyID) {
+        $responses = $this->Responses->find()->where(['survey_id' => $surveyID])->contain(['Users', 'Surveys'])->all()->toArray();
+        $questions = $this->Questions->find()->where(['survey_id' => $surveyID])->all()->toArray();
+
+        $sortedQuestions = [];
+
+        foreach($questions as $question) {
+            $sortedQuestions[$question->position] = $question;
+        }
+
+        $questions = $sortedQuestions;
+        $this->set(compact('responses', 'questions'));
     }
 
     /**

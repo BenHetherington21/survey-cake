@@ -37,7 +37,7 @@ class SurveysController extends AppController
         $this->set(compact('survey'));
     }
 
-    public function responses($id) {
+    public function responseSummary($id) {
         $survey = $this->Surveys->get($id, contain: ['Users', 'Questions', 'Responses']);
 
         $questions = [];

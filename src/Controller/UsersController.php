@@ -181,7 +181,8 @@ class UsersController extends AppController
 
         if($result && $result->isValid()) {
             $redirect = $this->request->getQuery('redirect', [
-                '/'
+                'controller' => 'Users',
+                'action' => 'profile'
             ]);
 
             return $this->redirect($redirect);
